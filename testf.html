@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>100 प्रश्नों का सामान्य ज्ञान क्विज़</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f0f8ff;
+    }
+    .quiz-container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 5px;
+      cursor: pointer;
+      text-align: left;
+    }
+    button {
+      margin: 10px 5px 0;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      font-weight: bold;
+      font-size: 18px;
+      color: green;
+      text-align: center;
+    }
+    #timer {
+      font-size: 18px;
+      color: red;
+      margin-bottom: 10px;
+    }
+    #navigation {
+      text-align: center;
+    }
+    .counter {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .review {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: left;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+    #submit-container {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>100 प्रश्नों का सामान्य ज्ञान क्विज़</h1>
+    <div id="timer">प्रश्न टाइमर: 00:30</div>
+    <div id="quiz"></div>
+    <div class="counter" id="counter"></div>
+    <div id="navigation">
+      <button onclick="prevPage()">⬅️ पिछला</button>
+      <button onclick="nextPage()">➡️ अगला</button>
+    </div>
+    <div id="submit-container">
+      <button onclick="submitQuiz()">✅ सबमिट करें</button>
+    </div>
+    <p id="result"></p>
+    <div id="review"></div>
+  </div>
+
+  <script>
+    const quizContainer = document.getElementById("quiz");
+    const resultContainer = document.getElementById("result");
+    const timerElement = document.getElementById("timer");
+    const counterElement = document.getElementById("counter");
+    const reviewContainer = document.getElementById("review");
+
+    let questions = [];
+    let currentPage = 0;
+    let answers = {};
+    let interval;
+    let startTime = Date.now();
+
+    const questionTimes = Array(100).fill(30);
+
+    function updateTimerDisplay(timeLeft) {
+      let minutes = parseInt(timeLeft / 60, 10);
+      let seconds = parseInt(timeLeft % 60, 10);
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      timerElement.textContent = `प्रश्न टाइमर: ${minutes}:${seconds}`;
+    }
+
+    function hideTimer() {
+      timerElement.style.display = 'none';
+    }
+
+    function startPerQuestionTimer(index) {
+      clearInterval(interval);
+      let timeLeft = questionTimes[index];
+      updateTimerDisplay(timeLeft);
+      interval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          if (currentPage < questions.length - 1) {
+            currentPage++;
+            renderPage();
+          } else {
+            submitQuiz();
+          }
+        } else {
+          timeLeft--;
+          questionTimes[index] = timeLeft;
+          updateTimerDisplay(timeLeft);
+        }
+      }, 1000);
+    }
+
+    function renderPage() {
+      quizContainer.innerHTML = "";
+      const q = questions[currentPage];
+      counterElement.textContent = `प्रश्न ${currentPage + 1} / ${questions.length}`;
+
+      const questionDiv = document.createElement("div");
+      questionDiv.classList.add("question");
+      questionDiv.innerHTML = `
+        <p><strong>Q${currentPage + 1}:</strong> ${q.question}</p>
+        <div class="options">
+          ${q.options.map(opt => `
+            <label>
+              <input type="radio" name="q${currentPage}" value="${opt}" 
+              ${answers[currentPage] === opt ? 'checked' : ''} 
+              onchange="saveAnswer(${currentPage}, this.value)"> ${opt}
+            </label>
+          `).join('')}
+        </div>
+      `;
+      quizContainer.appendChild(questionDiv);
+      timerElement.style.display = 'block';
+      startPerQuestionTimer(currentPage);
+    }
+
+    function saveAnswer(index, value) {
+      answers[index] = value;
+    }
+
+    function nextPage() {
+      if (currentPage < questions.length - 1) {
+        currentPage++;
+        renderPage();
+      } else {
+        submitQuiz();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        renderPage();
+      }
+    }
+
+    function submitQuiz() {
+      clearInterval(interval);
+      hideTimer();
+
+      const endTime = Date.now();
+      const totalTime = Math.floor((endTime - startTime) / 1000);
+      const minutes = Math.floor(totalTime / 60);
+      const seconds = totalTime % 60;
+
+      let correct = 0;
+      questions.forEach((q, i) => {
+        if (answers[i] === q.answer) correct++;
+      });
+
+      const percentage = (correct / questions.length * 100).toFixed(2);
+        let feedback = '';
+        if (percentage >= 80) {
+          feedback = '🎉 शानदार प्रदर्शन! आप टॉप पर हैं!';
+        } else if (percentage >= 60) {
+          feedback = '👍 अच्छा प्रयास! थोड़ी और मेहनत करें।';
+        } else if (percentage >= 40) {
+          feedback = '⚠️ औसत प्रदर्शन, अभ्यास ज़रूरी है।';
+        } else {
+          feedback = '❗ प्रयास जारी रखें, सफलता निकट है।';
+        }
+
+        resultContainer.innerHTML = `
+          <p>आपने कुल ${questions.length} में से ${Object.keys(answers).length} प्रश्नों के उत्तर दिए हैं।</p>
+          <p>आपका स्कोर: <strong>${correct} / ${questions.length}</strong></p>
+          <p style="color: green; font-size: 20px;"><strong>प्रतिशत: ${percentage}%</strong></p>
+          <p><em>कुल समय: ${minutes} मिनट ${seconds} सेकंड</em></p>
+          <p style="font-weight:bold; color:blue;">${feedback}</p>
+        `;
+
+    //   resultContainer.textContent = `\nआपने कुल ${questions.length} में से ${Object.keys(answers).length} प्रश्नों के उत्तर दिए हैं।\nआपका स्कोर: ${correct} / ${questions.length}\n\nकुल समय: ${minutes} मिनट ${seconds} सेकंड`;
+
+      quizContainer.innerHTML = "<strong>क्विज़ समाप्त हो गया है। धन्यवाद!</strong>";
+      document.getElementById("navigation").style.display = "none";
+      document.getElementById("counter").style.display = "none";
+      document.getElementById("submit-container").style.display = "none";
+
+      let reviewHtml = "<h2>उत्तर समीक्षा</h2>";
+      questions.forEach((q, i) => {
+        let userAns = answers[i] || "❌ उत्तर नहीं दिया";
+        let isCorrect = userAns === q.answer;
+        reviewHtml += `<div class='review'>
+          <strong>Q${i + 1}:</strong> ${q.question}<br>
+          <span>आपका उत्तर: <span class='${isCorrect ? "correct" : "wrong"}'>${userAns}</span></span><br>
+          <span>सही उत्तर: <strong>${q.answer}</strong></span>
+        </div>`;
+      });
+      reviewContainer.innerHTML = reviewHtml;
+    }
+
+    async function loadQuiz() {
+      const response = await fetch("questions.json");
+      questions = await response.json();
+      renderPage();
+    }
+
+    loadQuiz();
+  </script>
+</body>
+</html>

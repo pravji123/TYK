@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Your Knowledge</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f9ff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: #0074cc;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav h1 {
+      font-size: 24px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 15px;
+      background-color: #e6f2ff;
+    }
+
+    header h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #0074cc;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      padding: 30px 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 350px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      color: #0074cc;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #0074cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #005fa3;
+    }
+
+    input[type="email"] {
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    form {
+      margin-top: 15px;
+    }
+
+    footer {
+      background-color: #002b55;
+      color: #fff;
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #aad4ff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+
+  <!-- ✅ Order ID Generator -->
+  <script>
+    function generateOrderId() {
+      const now = new Date();
+      const pad = (n) => n.toString().padStart(2, '0');
+      const date = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
+      const time = `${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+      const count = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+      return `${date}${time}${count}`;
+    }
+
+    window.onload = () => {
+      const orderId = generateOrderId();
+      const hiddenInput = document.getElementById("order-id");
+      if (hiddenInput) hiddenInput.value = orderId;
+
+      const buyBtn = document.getElementById("buy-btn");
+      if (buyBtn) {
+        const baseUrl = buyBtn.getAttribute("data-base");
+        buyBtn.href = `${baseUrl}?note=${orderId}`;
+      }
+    };
+  </script>
+</head>
+<body>
+
+  <!-- ✅ Navigation -->
+  <nav>
+    <h1>🧠 Test Your Knowledge</h1>
+    <ul>
+      <li><a href="#buy">Buy Sets</a></li>
+      <li><a href="#test">Take Test</a></li>
+      <li><a href="#sample">Free Sample</a></li>
+      <li><a href="#join">Telegram</a></li>
+    </ul>
+  </nav>
+
+  <!-- ✅ Page Intro -->
+  <header>
+    <h2>BPSC TRE 4.0 & Computer Science Practice Hub</h2>
+    <p>Practice Sets | Online Tests | Free Samples</p>
+  </header>
+
+  <!-- ✅ Main Cards -->
+  <div class="container">
+    <div class="card" id="buy">
+      <h3>📘 Buy Practice Sets</h3>
+      <p>Download all 10 sets with Basic to Advanced questions.</p>
+      <a class="btn" id="buy-btn" data-base="https://imjo.in/Vzxb7t" target="_blank">Buy Now (₹49)</a>
+    </div>
+
+    <div class="card" id="test">
+      <h3>🧪 Take Online Test</h3>
+      <p>MCQ-based practice test with real-time results.</p>
+      <a class="btn" href="testf.html" target="blank">Start Test</a>
+    </div>
+
+    <div class="card" id="sample">
+      <h3>📝 Try Free Sample</h3>
+      <p>Enter your email to receive a free PDF and join our Telegram group.</p>
+      <form action="https://docs.google.com/forms/d/e/1FAIpQLSdNesOHcwll-5k8DViVX5Ubry0FRKG2wN9pGJ5n2AMKgZsmDQ/viewform?usp=dialog" method="post" target="_blank">
+        <!-- <input type="email" name="email_address" placeholder="Enter your email" required> -->
+        <!-- <input type="hidden" name="order_id" id="order-id" value=""> -->
+        <button type="submit" class="btn">Download PDF</button>
+      </form>
+      <br>
+      <a class="btn" id="join" href="https://t.me/Bpsc_Tre4_Computer_Stet" target="_blank">Join Telegram</a>
+    </div>
+  </div>
+
+
+  <!-- ✅ Footer -->
+  <footer>
+    <p>&copy; 2025 <strong>Test Your Knowledge</strong> | Designed by <strong>Er. Praveen Kumar</strong></p>
+    <p>Follow us on <a href="https://t.me/Bpsc_Tre4_Computer_Stet" target="_blank">Telegram</a></p>
+  </footer>
+
+</body>
+</html>
