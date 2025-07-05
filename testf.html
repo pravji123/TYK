@@ -245,7 +245,7 @@
     }
 
     async function loadQuiz() {
-      const response = await fetch("questions.json");
+      const response = await fetch("set1.json");
       questions = await response.json();
       renderPage();
     }
