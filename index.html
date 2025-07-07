@@ -22,33 +22,72 @@
     nav {
       background-color: #0074cc;
       color: white;
-      padding: 15px 20px;
+      padding: 18px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 1000;
+      flex-wrap: wrap;
     }
 
-    nav h1 {
-      font-size: 24px;
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
     }
 
-    nav ul {
-      list-style: none;
+    .nav-links {
       display: flex;
       gap: 15px;
     }
 
-    nav ul li a {
+    .nav-links a {
       color: white;
       text-decoration: none;
-      font-weight: bold;
+      font-size: 17px;
+      transition: color 0.3s;
     }
 
-    nav ul li a:hover {
+    .nav-links a:hover {
+      color: #ff9933;
       text-decoration: underline;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      /* .nav-links {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        align-items: center;
+      } */
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #0074cc;
+        position: absolute;
+        align-items: center;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        padding: 10px 20px;
+      }
+
+      .nav-links.active {
+        display: flex;
+        margin-top: 10px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
     }
 
     header {
@@ -124,7 +163,7 @@
 
     footer {
       background-color: #002b55;
-      color: #fff;
+      color: #ffffff;
       padding: 30px 20px;
       text-align: center;
       font-size: 14px;
@@ -141,27 +180,14 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 600px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav ul {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-      }
-
-      .container {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
   </style>
 
   <!-- ✅ Order ID Generator -->
   <script>
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("active");
+    }
+
     function generateOrderId() {
       const now = new Date();
       const pad = (n) => n.toString().padStart(2, '0');
@@ -188,13 +214,15 @@
 
   <!-- ✅ Navigation -->
   <nav>
-    <h1>🧠 Test Your Knowledge</h1>
-    <ul>
-      <li><a href="#buy">Buy Sets</a></li>
-      <li><a href="#test">Take Test</a></li>
-      <li><a href="#sample">Free Sample</a></li>
-      <li><a href="#join">Telegram</a></li>
-    </ul>
+    <div class="logo">🧠 Test Your Knowledge</div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#">Home</a>
+      <a href="#buy">Practice Sets</a>
+      <a href="#test">Mock Tests</a>
+      <a href="#sample">Free Sample</a>
+      <a href="#join">Contact</a>
+    </div>
   </nav>
 
   <!-- ✅ Page Intro -->
@@ -207,7 +235,7 @@
   <div class="container">
     <div class="card" id="buy">
       <h3>📘 Buy Practice Sets</h3>
-      <img src="img/card_e_book.jpg" alt="e_Book Image" style="width: 100%; border-radius: 8px;" />
+      <img src="image/card_e_book.jpg" alt="Test Image" style="width: 100%; border-radius: 8px;" />
       <p>Download practice sets with Basic to Advanced questions.</p>
       <a class="btn" id="buy-btn" data-base="#">Buy Now (₹9)</a>
       <!-- <a class="btn" id="buy-btn" data-base="#https://rzp.io/rzp/eb4c1gC" target="_blank">Buy Now (₹9)</a> -->
@@ -215,14 +243,14 @@
 
     <div class="card" id="test">
       <h3>🧪 Take Online Test</h3>
-      <img src="img/card_test.jpg" alt="Test Image" style="width: 100%; border-radius: 8px;" />
+      <img src="image/card_test.jpg" alt="Test Image" style="width: 100%; border-radius: 8px;" />
       <p>MCQ-based practice test with real-time results.</p>
       <a class="btn" href="testf.html" target="blank">Start Test</a>
     </div>
 
     <div class="card" id="sample">
       <h3>📝 Try Free Sample</h3>
-      <img src="img/card_cs.jpg" alt="CS Image" style="width: 100%; border-radius: 8px;" />
+      <img src="image/card_cs.jpg" alt="Test Image" style="width: 100%; border-radius: 8px;" />
       <p>Enter your email to receive a free PDF and join our Telegram group.</p>
       <!-- PDF को नए टैब में खोलने के लिए -->
        <a href="TYK_Sample.pdf" target="_blank" class="btn">📖 View PDF</a>
@@ -246,7 +274,7 @@
       <span style="color: #138808; font-weight: bold;">India</span>
       <span> with ❤️ | Empowering learners daily</span>
     </p>  
-    <p>&copy; 2025 <strong>Test Your Knowledge</strong> | Designed by <strong>DIGITAL HELP DESK ✅</strong></p>
+    <p>&copy; 2025 <strong>Test Your Knowledge</strong> | Designed by <strong>DIGITAL HELP DESK & Team ✅</strong></p>
     <!-- <p>&copy; 2025 <strong>Test Your Knowledge</strong> | Designed by <strong>Er. Praveen Kumar</strong></p> -->
     <p>Follow us on <a href="https://t.me/Bpsc_Tre4_Computer_Stet" target="_blank">Telegram</a></p>
   </footer>
